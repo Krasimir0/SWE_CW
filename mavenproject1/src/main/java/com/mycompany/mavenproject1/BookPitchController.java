@@ -1,6 +1,5 @@
 package com.mycompany.mavenproject1;
 
-
 import com.mycompany.mavenproject1.Booking;
 import com.mycompany.mavenproject1.Member;
 import com.mycompany.mavenproject1.Payment;
@@ -13,12 +12,12 @@ import java.util.List;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author krasipetranov
  */
 public class BookPitchController {
+
     private List<Member> members;
     private List<Pitch> pitches;
     private List<Booking> bookings;
@@ -31,8 +30,32 @@ public class BookPitchController {
         members = new ArrayList<>();
         pitches = new ArrayList<>();
         bookings = new ArrayList<>();
+        seedTestData();
     }
-    
+
+    private void seedTestData() {
+        Member m = new Member(1, "Krasimir Petranov",
+                "k.petranov@example.com", "07123456789", "pass123");
+        Membership mem = new Membership(101, "Full",
+                LocalDate.now().plusMonths(6), "Active");
+        m.setMembership(mem);
+        members.add(m);
+
+        
+        Member m2 = new Member(2, "John Expired",
+                "exp@test.com", "0700000000", "pass");
+        Membership mem2 = new Membership(102, "Weekday",
+                LocalDate.now().minusDays(40), "Lapsed");
+        m2.setMembership(mem2);
+        members.add(m2);
+
+        
+        pitches.add(new Pitch(1, "Football A", "East Site", 45.0));
+        pitches.add(new Pitch(2, "Tennis 1", "West Site", 25.0));
+        pitches.add(new Pitch(3, "Basketball Court", "Main Hall", 30.0));
+        pitches.add(new Pitch(4, "Studio 2", "Main Hall", 35.0));
+    }
+
     public Member authenticate(String email, String password) {
         for (Member m : members) {
             if (m.login(email, password)) {
@@ -55,15 +78,24 @@ public class BookPitchController {
 
     public String checkMembershipValidity() {
         Membership mem = currentMember.getMembership();
-        if (mem == null) return "No membership found";
+        if (mem == null) {
+            return "No membership found";
+        }
         mem.applyGracePeriod();  // update status if expired but within grace
-        if (mem.isValid()) return "Valid";
-        else return "Overdue – renewal required";
+        if (mem.isValid()) {
+            return "Valid";
+        } else {
+            return "Overdue – renewal required";
+        }
     }
 
     public Booking initiateBooking(Pitch pitch, LocalDate date, String timeSlot) {
-        if (!pitch.checkAvailability()) return null;
-        if (!currentMember.getMembership().isValid()) return null;
+        if (!pitch.checkAvailability()) {
+            return null;
+        }
+        if (!currentMember.getMembership().isValid()) {
+            return null;
+        }
         selectedPitch = pitch;
         Booking b = new Booking(nextBookingId++, date, timeSlot, currentMember, pitch);
         return b;
@@ -80,13 +112,17 @@ public class BookPitchController {
         return p;
     }
 
-    public Member getCurrentMember() { 
+    public Member getCurrentMember() {
         return currentMember;
     }
-    
+
     public List<String> getLocations() {
         List<String> locs = new ArrayList<>();
-        for (Pitch p : pitches) if (!locs.contains(p.getLocation())) locs.add(p.getLocation());
+        for (Pitch p : pitches) {
+            if (!locs.contains(p.getLocation())) {
+                locs.add(p.getLocation());
+            }
+        }
         return locs;
     }
 }
