@@ -33,18 +33,36 @@ public class Member {
         return this.email.equals(email) && this.password.equals(password);
     }
 
-    public void register() { /* simplified */ }
     public void updateDetails(String email, String phone) {
         this.email = email;
         this.phone = phone;
     }
-    public List<Booking> viewBookings() { return bookings; }
-    public void addBooking(Booking b) { bookings.add(b); }
+    
+    public List<Booking> viewBookings() {
+        return bookings;
+    }
+    
+    public void addBooking(Booking b) {
+        bookings.add(b);
+    }
 
-    // Getters & setters
-    public int getMemberId() { return memberId; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public Membership getMembership() { return membership; }
-    public void setMembership(Membership m) { this.membership = m; }
+    public int getMemberId() { 
+        return memberId;
+    }
+    
+    public String getName() { 
+        return name; 
+    }
+    
+    public String getEmail() { 
+        return email; 
+    }
+    
+    public Membership getMembership() { 
+        return membership; 
+    }
+    
+    public void setMembership(Membership m) { 
+        this.membership = m; 
+    }
 }
